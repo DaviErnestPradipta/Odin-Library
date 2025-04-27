@@ -7,11 +7,28 @@
     <title>Document</title>
 </head>
 <body>
-    <header>
-        <h1>Library</h1>
-        <button><strong>Add Book</strong></button>
-    </header>
-    <div class="book-card-container"></div>
+    <header><h1>Library</h1></header>
+    <div class="book-card-grid"></div>
+    <form class="add-book-form">
+        <strong>Add a new book</strong>
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input class="input" type="text" id="title" required/>
+        </div>
+        <div class="form-group">
+            <label for="author">Author</label>
+            <input class="input" type="text" id="author" required/>
+        </div>
+        <div class="form-group">
+            <label for="pages">Pages</label>
+            <input class="input" type="text" id="pages" required/>
+        </div>
+        <div class="form-group">
+            <label for="is-read">Read?</label>
+            <input class="checkbox" type="checkbox" id="is-read"/>
+        </div>
+        <button type="submit"><strong>Submit</strong></button>
+    </form>
     <script src="./script.js"></script>
 </body>
 </html>

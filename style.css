@@ -9,25 +9,27 @@ html, body {
 
 header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     width: 100%;
 }
 
-header > h1 {
-    margin-left: 1rem;
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
 
-header > button {
-    margin-right: 1rem;
-    font-size: 1rem;
-    padding: 1rem;
-    background-color: white;
-    border-radius: 2rem;
+.form-group {
+    display: flex;
+    align-items: center;
+    width: 300px;
+    justify-content: flex-start;
+    gap: 1rem;
 }
 
-header > button:hover {
-    background-color: rgb(100, 150, 100);
-    color: white;
-    cursor: pointer;
+.form-group label {
+    width: 100px;
+    text-align: right;
 }
