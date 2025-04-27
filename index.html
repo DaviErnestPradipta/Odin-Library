@@ -8,9 +8,8 @@
 </head>
 <body>
     <header><h1>Library</h1></header>
-    <div class="book-card-grid"></div>
-    <form class="add-book-form">
-        <strong>Add a new book</strong>
+    <form class="book-form">
+        <h2>Add a new book</h2>
         <div class="form-group">
             <label for="title">Title</label>
             <input class="input" type="text" id="title" required/>
@@ -21,7 +20,7 @@
         </div>
         <div class="form-group">
             <label for="pages">Pages</label>
-            <input class="input" type="text" id="pages" required/>
+            <input class="input" type="number" id="pages" required/>
         </div>
         <div class="form-group">
             <label for="is-read">Read?</label>
@@ -29,6 +28,7 @@
         </div>
         <button type="submit"><strong>Submit</strong></button>
     </form>
+    <div class="book-grid"></div>
     <script src="./script.js"></script>
 </body>
 </html>

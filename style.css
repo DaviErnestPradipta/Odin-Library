@@ -33,3 +33,16 @@ form {
     width: 100px;
     text-align: right;
 }
+
+.book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.book-card {
+    border: 0.25rem solid black;
+    padding: 1rem;
+    text-align: center;
+}
