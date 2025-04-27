@@ -1,5 +1,6 @@
 const form = document.querySelector('.book-form');
 const bookGrid = document.querySelector('.book-grid');
+const books = [];
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -8,6 +9,17 @@ form.addEventListener('submit', (e) => {
     const author = document.getElementById('author').value.trim();
     const pages = document.getElementById('pages').value.trim();
     const isRead = document.getElementById('is-read').checked;
+    const bookId = crypto.randomUUID();
+
+    const newBook = {
+        id: bookId,
+        title: title,
+        author: author,
+        pages: pages,
+        isRead: isRead
+    };
+
+    books.push(newBook)
 
     const card = document.createElement('div');
     card.classList.add('book-card');
@@ -27,17 +39,24 @@ form.addEventListener('submit', (e) => {
     const toggleButton = document.createElement('button');
     toggleButton.textContent = 'Toggle';
     toggleButton.addEventListener('click', () => {
-        bookStatus.innerHTML = `<strong>Status: </strong> 
-        ${(bookStatus.innerHTML.includes('Yes')) ? 'No' : 'Yes'}`
+        const bookIndex = books.findIndex(book => book.id === bookId);
+        if (bookIndex !== -1) {
+            books[bookIndex].isRead = !books[bookIndex].isRead;
+            bookStatus.innerHTML = `<strong>Status: </strong> 
+            ${books[bookIndex].isRead ? 'Yes' : 'No'}`;
+        }
     });
 
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
     deleteButton.addEventListener('click', () => {
+        const bookIndex = books.findIndex(book => book.id === bookId);
+        if (bookIndex !== -1) {
+            books.splice(bookIndex, 1);
+        }
         card.remove();
     });
 
-    // Add everything into the card
     card.appendChild(bookTitle);
     card.appendChild(bookAuthor);
     card.appendChild(bookPages);
@@ -45,9 +64,7 @@ form.addEventListener('submit', (e) => {
     card.appendChild(toggleButton);
     card.appendChild(deleteButton);
 
-    // Add the card to the grid
     bookGrid.appendChild(card);
 
-    // Reset the form
     form.reset();
 });
