@@ -1,70 +1,95 @@
-const form = document.querySelector('.book-form');
-const bookGrid = document.querySelector('.book-grid');
-const books = [];
+class Book {
+    constructor(id, title, author, pages, isRead) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.isRead = isRead;
+    }
 
-form.addEventListener('submit', (e) => {
-    e.preventDefault();
+    toggleReadStatus() {
+        this.isRead = !this.isRead;
+    }
+}
 
-    const title = document.getElementById('title').value.trim();
-    const author = document.getElementById('author').value.trim();
-    const pages = document.getElementById('pages').value.trim();
-    const isRead = document.getElementById('is-read').checked;
-    const bookId = crypto.randomUUID();
+class Library {
+    constructor() {
+        this.books = [];
+        this.bookGrid = document.querySelector('.book-grid');
+        this.form = document.querySelector('.book-form');
+        this.initializeForm();
+    }
 
-    const newBook = {
-        id: bookId,
-        title: title,
-        author: author,
-        pages: pages,
-        isRead: isRead
-    };
+    initializeForm() {
+        this.form.addEventListener('submit', (e) => {
+            e.preventDefault();
 
-    books.push(newBook)
+            const title = document.getElementById('title').value.trim();
+            const author = document.getElementById('author').value.trim();
+            const pages = document.getElementById('pages').value.trim();
+            const isRead = document.getElementById('is-read').checked;
 
-    const card = document.createElement('div');
-    card.classList.add('book-card');
+            if (!title || !author || !pages) {
+                alert('Please fill in all fields.');
+                return;
+            }
 
-    const bookTitle = document.createElement('h3');
-    bookTitle.textContent = `"${title}"`;
+            const bookId = crypto.randomUUID();
+            const newBook = new Book(bookId, title, author, pages, isRead);
+            this.addBook(newBook);
+            this.form.reset();
+        });
+    }
 
-    const bookAuthor = document.createElement('p');
-    bookAuthor.innerHTML = `<strong>Author: </strong> ${author}`;
+    addBook(book) {
+        this.books.push(book);
+        this.renderBook(book);
+    }
 
-    const bookPages = document.createElement('p');
-    bookPages.innerHTML = `<strong>Pages: </strong> ${pages}`;
+    removeBook(bookId) {
+        this.books = this.books.filter(book => book.id !== bookId);
+    }
 
-    const bookStatus = document.createElement('p');
-    bookStatus.innerHTML = `<strong>Status: </strong> ${isRead ? 'Yes' : 'No'}`;
+    renderBook(book) {
+        const card = document.createElement('div');
+        card.classList.add('book-card');
 
-    const toggleButton = document.createElement('button');
-    toggleButton.textContent = 'Toggle';
-    toggleButton.addEventListener('click', () => {
-        const bookIndex = books.findIndex(book => book.id === bookId);
-        if (bookIndex !== -1) {
-            books[bookIndex].isRead = !books[bookIndex].isRead;
-            bookStatus.innerHTML = `<strong>Status: </strong> 
-            ${books[bookIndex].isRead ? 'Yes' : 'No'}`;
-        }
-    });
+        const bookTitle = document.createElement('h3');
+        bookTitle.textContent = `"${book.title}"`;
 
-    const deleteButton = document.createElement('button');
-    deleteButton.textContent = 'Delete';
-    deleteButton.addEventListener('click', () => {
-        const bookIndex = books.findIndex(book => book.id === bookId);
-        if (bookIndex !== -1) {
-            books.splice(bookIndex, 1);
-        }
-        card.remove();
-    });
+        const bookAuthor = document.createElement('p');
+        bookAuthor.innerHTML = `<strong>Author: </strong> ${book.author}`;
 
-    card.appendChild(bookTitle);
-    card.appendChild(bookAuthor);
-    card.appendChild(bookPages);
-    card.appendChild(bookStatus);
-    card.appendChild(toggleButton);
-    card.appendChild(deleteButton);
+        const bookPages = document.createElement('p');
+        bookPages.innerHTML = `<strong>Pages: </strong> ${book.pages}`;
 
-    bookGrid.appendChild(card);
+        const bookStatus = document.createElement('p');
+        bookStatus.innerHTML = `<strong>Status: </strong> ${book.isRead ? 'Yes' : 'No'}`;
 
-    form.reset();
-});
+        const toggleButton = document.createElement('button');
+        toggleButton.textContent = 'Toggle';
+        toggleButton.addEventListener('click', () => {
+            book.toggleReadStatus();
+            bookStatus.innerHTML = `<strong>Status: </strong> ${book.isRead ? 'Yes' : 'No'}`;
+        });
+
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.addEventListener('click', () => {
+            this.removeBook(book.id);
+            card.remove();
+        });
+
+        card.appendChild(bookTitle);
+        card.appendChild(bookAuthor);
+        card.appendChild(bookPages);
+        card.appendChild(bookStatus);
+        card.appendChild(toggleButton);
+        card.appendChild(deleteButton);
+
+        this.bookGrid.appendChild(card);
+    }
+}
+
+// Initialize the library
+const library = new Library();
